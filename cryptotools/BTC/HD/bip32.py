@@ -107,7 +107,8 @@ class ExtendedKey:
         else:
             ih = f'{i}' if i < 2**31 else f"{i - 2**31}h"
             path = '/'.join([constructor.root_path] + ['x' for _ in range(depth - 1)] + [ih])
-
+        print("testing2")
+        print(path)
         code = read(32)
         key = read(33)
         key = PrivateKey(key) if is_private else PublicKey.decode(key)
