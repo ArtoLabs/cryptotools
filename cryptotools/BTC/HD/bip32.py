@@ -90,7 +90,7 @@ class ExtendedKey:
             nonlocal bts
             data, bts = bts[:n], bts[n:]
             return data
-	print("testing2")
+        print("testing2")
         net = read(4)
         is_private = net in network('extended_prv').values()
         is_public = net in network('extended_pub').values()
@@ -98,11 +98,11 @@ class ExtendedKey:
         address_lookup = {val: key for key, val in (network('extended_prv') if is_private else network('extended_pub')).items()}
         constructor = Xprv if is_private else Xpub
         depth = bytes_to_int(read(1))
-	print(depth)
+        print(depth)
         assert depth in range(256), f'Invalid depth : {depth}'
         fingerprint = read(4)
         i = bytes_to_int(read(4))
-	print(i)
+        print(i)
         if depth == 0:
             i = None
             path = None
