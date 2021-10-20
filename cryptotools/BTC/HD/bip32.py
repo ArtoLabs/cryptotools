@@ -207,7 +207,8 @@ class Xpub(ExtendedKey):
         key = PrivateKey(I_L).to_public().point + self.key.point
         ret_code = I_R
         path = self.path + f'/{i}'
-
+        print("testing")
+        print(path)
         # TODO add point at infinity check
         return Xpub(PublicKey(key), ret_code, depth=self.depth + 1, i=i, parent=self.fingerprint(), path=path, addresstype=self.type.value)
 
