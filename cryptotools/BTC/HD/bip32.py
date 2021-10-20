@@ -85,9 +85,7 @@ class ExtendedKey:
 
     @classmethod
     def deserialize(cls, bts: bytes) -> 'ExtendedKey':
-        print("testing2")
-        print(cls)
-        print(bts)
+
         def read(n):
             nonlocal bts
             data, bts = bts[:n], bts[n:]
@@ -100,11 +98,9 @@ class ExtendedKey:
         address_lookup = {val: key for key, val in (network('extended_prv') if is_private else network('extended_pub')).items()}
         constructor = Xprv if is_private else Xpub
         depth = bytes_to_int(read(1))
-        print(depth)
         assert depth in range(256), f'Invalid depth : {depth}'
         fingerprint = read(4)
         i = bytes_to_int(read(4))
-        print(i)
         if depth == 0:
             i = None
             path = None
@@ -112,7 +108,6 @@ class ExtendedKey:
             ih = f'{i}' if i < 2**31 else f"{i - 2**31}h"
             path = '/'.join([constructor.root_path] + ['x' for _ in range(depth - 1)] + [ih])
         
-        print(path)
         code = read(32)
         key = read(33)
         key = PrivateKey(key) if is_private else PublicKey.decode(key)
@@ -212,8 +207,6 @@ class Xpub(ExtendedKey):
         key = PrivateKey(I_L).to_public().point + self.key.point
         ret_code = I_R
         path = self.path + f'/{i}'
-        print("testing")
-        print(path)
         # TODO add point at infinity check
         return Xpub(PublicKey(key), ret_code, depth=self.depth + 1, i=i, parent=self.fingerprint(), path=path, addresstype=self.type.value)
 
