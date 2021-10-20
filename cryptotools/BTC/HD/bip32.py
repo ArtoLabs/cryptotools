@@ -85,12 +85,14 @@ class ExtendedKey:
 
     @classmethod
     def deserialize(cls, bts: bytes) -> 'ExtendedKey':
-
+        print("testing2")
+        print(cls)
+        print(bts)
         def read(n):
             nonlocal bts
             data, bts = bts[:n], bts[n:]
             return data
-        print("testing2")
+        
         net = read(4)
         is_private = net in network('extended_prv').values()
         is_public = net in network('extended_pub').values()
