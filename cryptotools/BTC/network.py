@@ -10,7 +10,7 @@ class NETWORK(Enum):
 
 
 def current_network():
-    return NETWORK(os.environ.get('CRYPTOTOOLS_NETWORK', 'test'))
+    return NETWORK(os.environ.get('CRYPTOTOOLS_NETWORK', 'main'))
 
 
 main = {
