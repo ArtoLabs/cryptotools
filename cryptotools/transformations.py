@@ -18,9 +18,13 @@ def bytes_to_int(bts):
     return int.from_bytes(bts, 'big')
 
 
-def int_to_bytes(i):
-    length = max(1, (i.bit_length() + 7) // 8)
-    return i.to_bytes(length, 'big')
+# def int_to_bytes(i):
+#     length = max(1, (i.bit_length() + 7) // 8)
+#     return i.to_bytes(length, 'big')
+
+def int_to_bytes(val):
+    # Ensure correct padding for leading zeros
+    return val.to_bytes((val.bit_length() + 7) // 8, byteorder='big')
 
 
 def str_to_bytes(s):
