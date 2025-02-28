@@ -11,7 +11,12 @@ class NETWORK(Enum):
 
 
 def current_network():
-    return NETWORK(os.environ.get('CRYPTOTOOLS_NETWORK', 'main'))
+    network_value = os.environ.get('CRYPTOTOOLS_NETWORK', 'main')
+    if 'CRYPTOTOOLS_NETWORK' in os.environ:
+        print(f"Using environment variable CRYPTOTOOLS_NETWORK: {network_value}")
+    else:
+        print("Environment variable CRYPTOTOOLS_NETWORK not set, using default: 'main'")
+    return NETWORK(network_value)
 
 
 main = {
@@ -73,15 +78,15 @@ litecoin = {
     'scripthash': b'\x32',
     'wif': b'\xb0',
     'extended_prv': {
-        ADDRESS.P2PKH: b'\x04\x88\xad\xe4',  # Ltpv
-        ADDRESS.P2WPKH: b'\x04\xb2\x43\x0c',  # zprv
+        ADDRESS.P2PKH: b'\x01\x9d\xa4\x62',  # Ltpv (Litecoin private key for xprv)
+        ADDRESS.P2WPKH: b'\x04\x52\x83\x94',  # zprv
         ADDRESS.P2WSH: b'\x02\xaa\x7a\x99',  # Zprv
         ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x78\x78',  # yprv
         ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Yprv
     },
     'extended_pub': {
-        ADDRESS.P2PKH: b'\x04\x88\xb2\x1e',  # Ltub
-        ADDRESS.P2WPKH: b'\x04\xb2\x47\x46',  # zpub
+        ADDRESS.P2PKH: b'\x01\x9d\xa4\x63',  # Ltub (Litecoin public key for xpub)
+        ADDRESS.P2WPKH: b'\x04\x52\x87\xd1',  # zpub
         ADDRESS.P2WSH: b'\x02\xaa\x7e\xd3',  # Zpub
         ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x7c\xb2',  # ypub
         ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Ypub

@@ -90,27 +90,42 @@ class ExtendedKey:
             nonlocal bts
             data, bts = bts[:n], bts[n:]
             return data
-        
+
         net = read(4)
+        print(f"Network bytes: {bytes_to_hex(net)}")  # Debugging
+
         is_private = net in network('extended_prv').values()
         is_public = net in network('extended_pub').values()
         assert is_public ^ is_private, f'Invalid network bytes : {bytes_to_hex(net)}'
+        print(f"is_private: {is_private}, is_public: {is_public}")  # Debugging
+
         address_lookup = {val: key for key, val in (network('extended_prv') if is_private else network('extended_pub')).items()}
         constructor = Xprv if is_private else Xpub
         depth = bytes_to_int(read(1))
+        print(f"Depth: {depth}")  # Debugging
         assert depth in range(256), f'Invalid depth : {depth}'
+
         fingerprint = read(4)
+        print(f"Fingerprint: {bytes_to_hex(fingerprint)}")  # Debugging
+
         i = bytes_to_int(read(4))
+        print(f"Index: {i}")  # Debugging
         if depth == 0:
             i = None
             path = None
         else:
             ih = f'{i}' if i < 2**31 else f"{i - 2**31}h"
             path = '/'.join([constructor.root_path] + ['x' for _ in range(depth - 1)] + [ih])
-        
+        print(f"Path: {path}")  # Debugging
+
         code = read(32)
+        print(f"Chain code: {bytes_to_hex(code)}")  # Debugging
+
         key = read(33)
+        print(f"Key bytes: {bytes_to_hex(key)}")  # Debugging
         key = PrivateKey(key) if is_private else PublicKey.decode(key)
+        print(f"Key: {key}")  # Debugging
+
         assert not bts, 'Leftover bytes'
         return constructor(key, code, depth=depth, i=i, parent=fingerprint, path=path, addresstype=address_lookup[net])
 
@@ -120,6 +135,15 @@ class ExtendedKey:
         assert len(bts) == 82, f'Invalid length {len(bts)})'
         data, checksum = bts[:78], bts[78:]
         assert sha256(sha256(data)).startswith(checksum), 'Invalid checksum'
+
+        # Check for Bitcoin or Litecoin network byte
+        network_byte = data[:4]
+        bitcoin_networks = [b'\x04\x88\xb2\x1e', b'\x04\x88\xad\xe4']  # Bitcoin mainnet and testnet
+        litecoin_networks = [b'\x01\x9d\x68\xb1', b'\x01\x9d\x68\x80']  # Litecoin mainnet and testnet
+
+        if network_byte not in bitcoin_networks and network_byte not in litecoin_networks:
+            raise ValueError(f"Unsupported network byte: {bytes_to_hex(network_byte)}")
+
         return cls.deserialize(data)
 
     def __eq__(self, other):
