@@ -74,27 +74,28 @@ test = {
 
 litecoin = {
     'hrp': 'ltc',
-    'keyhash': b'\x30',
-    'scripthash': b'\x32',
-    'wif': b'\xb0',
+    'keyhash': b'\x30',  # Address prefix for P2PKH
+    'scripthash': b'\x32',  # Address prefix for P2SH
+    'wif': b'\xb0',  # Wallet Import Format prefix
     'extended_prv': {
-        ADDRESS.P2PKH: b'\x01\x9d\xa4\x62',  # Ltpv (Litecoin private key for xprv)
-        ADDRESS.P2WPKH: b'\x04\x52\x83\x94',  # zprv
-        ADDRESS.P2WSH: b'\x02\xaa\x7a\x99',  # Zprv
-        ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x78\x78',  # yprv
-        ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Yprv
+        ADDRESS.P2PKH: b'\x01\x9d\xa4\x62',  # Ltpv (Litecoin extended private key for P2PKH)
+        ADDRESS.P2WPKH: b'\x04\x52\x83\x94',  # zprv (Native SegWit)
+        ADDRESS.P2WSH: b'\x02\xaa\x7a\x99',  # Zprv (Native SegWit multi-sig)
+        ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x78\x78',  # yprv (Nested SegWit)
+        ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Yprv (Nested SegWit multi-sig)
     },
     'extended_pub': {
-        ADDRESS.P2PKH: b'\x01\x9d\xa4\x63',  # Ltub (Litecoin public key for xpub)
-        ADDRESS.P2WPKH: b'\x04\x52\x87\xd1',  # zpub
-        ADDRESS.P2WSH: b'\x02\xaa\x7e\xd3',  # Zpub
-        ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x7c\xb2',  # ypub
-        ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Ypub
+        ADDRESS.P2PKH: b'\x01\x9d\xa4\x63',  # Ltub (Litecoin extended public key for P2PKH)
+        ADDRESS.P2WPKH: b'\x04\x52\x87\xd1',  # zpub (Native SegWit)
+        ADDRESS.P2WSH: b'\x02\xaa\x7e\xd3',  # Zpub (Native SegWit multi-sig)
+        ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x7c\xb2',  # ypub (Nested SegWit)
+        ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Ypub (Nested SegWit multi-sig)
     },
     'utxo_url': 'https://chain.so/api/v2/get_tx_unspent/LTC/{address}',
     'rawtx_url': 'https://chain.so/api/v2/get_tx/LTC/{txid}',
     'broadcast_url': 'https://chain.so/api/v2/send_tx/LTC'
 }
+
 
 networks = {
     NETWORK.MAIN: main,
