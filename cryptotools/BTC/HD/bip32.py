@@ -132,6 +132,7 @@ class ExtendedKey:
     @classmethod
     def decode(cls, string: str) -> 'ExtendedKey':
         bts = base58.decode(string)
+        print(f"Raw decoded bytes: {bytes_to_hex(bts[:4])}")
         assert len(bts) == 82, f'Invalid length {len(bts)})'
         data, checksum = bts[:78], bts[78:]
         assert sha256(sha256(data)).startswith(checksum), 'Invalid checksum'
@@ -139,7 +140,7 @@ class ExtendedKey:
         # Check for Bitcoin or Litecoin network byte
         network_byte = data[:4]
         bitcoin_networks = [b'\x04\x88\xb2\x1e', b'\x04\x88\xad\xe4', b'\x04\x35\x87\xcf']  # Bitcoin mainnet, testnet, and tpub
-        litecoin_networks = [b'\x01\x9d\xa4\x62', b'\x01\x9d\x68\xb1', b'\x01\xb2\x6e\xf6', b'\x04\xb2\x47\x46']
+        litecoin_networks = [b'\x01\x9d\xa4\x62', b'\x01\x9d\xa4\x63', b'\x01\x9d\x68\xb1', b'\x01\xb2\x6e\xf6', b'\x04\xb2\x47\x46']
 
         if network_byte not in bitcoin_networks and network_byte not in litecoin_networks:
             raise ValueError(f"Unsupported network byte: {bytes_to_hex(network_byte)}")
