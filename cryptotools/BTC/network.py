@@ -7,6 +7,7 @@ from .opcodes import ADDRESS
 class NETWORK(Enum):
     MAIN = 'main'
     TEST = 'test'
+    LITECOIN = 'litecoin'
 
 
 def current_network():
@@ -66,9 +67,34 @@ test = {
     'broadcast_url': 'https://testnet.blockchain.info/pushtx'
 }
 
+litecoin = {
+    'hrp': 'ltc',
+    'keyhash': b'\x30',
+    'scripthash': b'\x32',
+    'wif': b'\xb0',
+    'extended_prv': {
+        ADDRESS.P2PKH: b'\x04\x88\xad\xe4',  # Ltpv
+        ADDRESS.P2WPKH: b'\x04\xb2\x43\x0c',  # zprv
+        ADDRESS.P2WSH: b'\x02\xaa\x7a\x99',  # Zprv
+        ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x78\x78',  # yprv
+        ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Yprv
+    },
+    'extended_pub': {
+        ADDRESS.P2PKH: b'\x04\x88\xb2\x1e',  # Ltub
+        ADDRESS.P2WPKH: b'\x04\xb2\x47\x46',  # zpub
+        ADDRESS.P2WSH: b'\x02\xaa\x7e\xd3',  # Zpub
+        ADDRESS.P2WPKH_P2SH: b'\x04\x9d\x7c\xb2',  # ypub
+        ADDRESS.P2WSH_P2SH: b'\x02\x95\xb4\x3f'  # Ypub
+    },
+    'utxo_url': 'https://chain.so/api/v2/get_tx_unspent/LTC/{address}',
+    'rawtx_url': 'https://chain.so/api/v2/get_tx/LTC/{txid}',
+    'broadcast_url': 'https://chain.so/api/v2/send_tx/LTC'
+}
+
 networks = {
     NETWORK.MAIN: main,
-    NETWORK.TEST: test
+    NETWORK.TEST: test,
+    NETWORK.LITECOIN: litecoin
 }
 
 
