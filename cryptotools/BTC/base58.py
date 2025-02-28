@@ -18,12 +18,18 @@ def encode(bts: bytes) -> str:
 
 
 def decode(b58: str) -> bytes:
+    print(f"Input Base58 string: {b58}")  # Debugging
     partial_sum = 0
     exponent = 0
     for digit in reversed(b58):
         try:
-            partial_sum += ALPHABET.index(digit) * BASE**exponent
+            index = ALPHABET.index(digit)
+            print(f"Digit: {digit}, Index: {index}, Exponent: {exponent}")  # Debugging
+            partial_sum += index * BASE**exponent
         except ValueError:
             raise Base58DecodeError('Bad Byte') from None
         exponent += 1
-    return int_to_bytes(partial_sum)
+    print(f"Partial sum: {partial_sum}")  # Debugging
+    result = int_to_bytes(partial_sum)
+    print(f"Decoded bytes: {result}")  # Debugging
+    return result
