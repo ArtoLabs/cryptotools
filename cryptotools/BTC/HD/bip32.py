@@ -85,6 +85,7 @@ class ExtendedKey:
 
     @classmethod
     def deserialize(cls, bts: bytes) -> 'ExtendedKey':
+        print(f"Raw input bytes: {bytes_to_hex(bts)}")  # Debugging
 
         def read(n):
             nonlocal bts
@@ -131,6 +132,7 @@ class ExtendedKey:
 
     @classmethod
     def decode(cls, string: str) -> 'ExtendedKey':
+        print(f"Encoded string: {string}")  # Debugging
         bts = base58.decode(string)
         print(f"Raw decoded bytes: {bytes_to_hex(bts[:4])}")
         assert len(bts) == 82, f'Invalid length {len(bts)})'
